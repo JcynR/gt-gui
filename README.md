@@ -5,7 +5,7 @@ Tweening
 
 #Types:
 
-Window
+Window\n
 Button
 Checkbox
 Gridlist
