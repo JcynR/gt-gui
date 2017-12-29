@@ -5,7 +5,7 @@ elements = {};
 
 dx = {};
 addEventHandler("onClientResourceStart", resourceRoot, function()
-	lnk.dx = dx;
+	baka.dx = dx;
 end)
 
 function new(_type, x, y, w, h)
@@ -287,7 +287,7 @@ addEventHandler('onClientKey', root, function(key, down)
 						end
 					end
 				end
-				if (elem.ontop) then -- issue (editboxes caret)
+				if (elem.ontop) then
 					if (elem.onKey) then
 						local callback = elem.onKey(key, down);
 						if (callback) then
@@ -299,64 +299,6 @@ addEventHandler('onClientKey', root, function(key, down)
 		end
 	end
 end);
-
---[[elements.tabpanel = {};
-function dx.tabpanel(title, x, y, w, h, color)
-	local self = new('tabpanel', x, y, w, h);
-	self.title = title;
-	self.color = color or tocolor(0,0,0,200);
-	self.tabs = {};
-	self.tabh = 64;
-	self.tabspace = 3;
-	self.selected = nil;
-
-	function self.draw()
-		dxDrawRectangle(self.x, self.y, self.w, self.h, tocolor(0,0,0,200));
-		local tabw = (self.w - (#self.tabs - 1) * self.tabspace) / #self.tabs;
-		local xoffset;
-
-		for i=1, #self.tabs do
-			local tab = self.tabs[i];
-			xoffset = i > 1 and xoffset + tabw + self.tabspace or 0;
-			local x = self.x + xoffset;
-
-			dxDrawRectangle(x, self.y, tabw, self.tabh, tocolor(0,255,0,200));
-			dxDrawText(tab.text, x + 3, self.y, x + tabw, self.y + self.tabh, tocolor(255,255,255,255), 1.2, "default", "left", "center", true);
-
-			if (tab.selected) then
-				for i=1, #tab.children do
-					local child = tab.children[i];
-					child.x = child.ox + self.x;
-					child.y = child.oy + self.y;
-				end
-			end
-		end
-	end
-
-	function self.addTab(title)
-		--big mess
-		local tab = dx.window(title, 0, self.tabh, self.w, self.h - self.tabh);
-		table.insert(self.tabs, tab);
-		tab.setParent(self);
-		tab.showTitleBar = false;
-		tab.closeBtn.enabled = false;
-		tab.closeBtn.style.bgColor = tocolor(0,0,0,0);
-		tab.closeBtn.style.color = tocolor(0,0,0,0);
-		tab.style.bgColor = tocolor(0,255,0,100);
-
-		function tab.update()
-			if (tab == self.selected) then
-				for i=1, #tab.children do
-					tab.children[i].draw();
-				end
-			end
-		end
-
-		return tab
-	end
-
-	return self;
-end]]
 
 elements.input = {};
 function dx.input(text, x, y, w, h)
@@ -854,14 +796,6 @@ function dx.progressBar(x, y, w, h, onFinish)
 		dxDrawRectangle(self.x, self.y, self.w, self.h, self.style.bgColor);
 		dxDrawRectangle(self.x+self.style.spacing, self.y+self.style.spacing, self.w-self.style.spacing*2, self.h-self.style.spacing*2, self.style.innerColor);
 
-		--[[if (isTimer(self.onFinish)) then
-			if (not ms) then
-				ms = getTimerDetails(self.onFinish);
-			end
-			local secs = (ms/1000) - 1
-			self.value = self.value + (secs/self.w) * (self.maxValue);
-		end]]
-
 		if (self.value < 0) then
 			self.value = 0;
 		elseif (self.value > self.maxValue) then
@@ -892,12 +826,10 @@ end
 function dx.alert(msg, ycallback, ncallback, btn1text, btn2text)
 	local self = dx.window("alert", 0, 0, 400, 300);
 	self.align("center");
-	--showCursor(self.visible);
 	self.label = dx.label(msg, 0, 0, self.w, self.h - 60, self.style.color, 1.5, true, "default", "center", "center");
 	self.label.setParent(self);
 
 	self.closeBtn.onclick = function()
-		--showCursor(false);
 		self.destroy();
 	end
 
@@ -909,7 +841,6 @@ function dx.alert(msg, ycallback, ncallback, btn1text, btn2text)
 			if (ycallback) then
 				ycallback();
 			end
-			--showCursor(false);
 			self.destroy();
 		end
 	end
@@ -921,12 +852,10 @@ function dx.alert(msg, ycallback, ncallback, btn1text, btn2text)
 		n.setParent(self);
 		y.onclick = function()
 			ycallback();
-			--showCursor(false);
 			self.destroy();
 		end
 		n.onclick = function()
 			ncallback();
-			--showCursor(false);
 			self.destroy();
 		end
 	end
