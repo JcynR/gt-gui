@@ -1,7 +1,9 @@
+#Dx framework for MTA. WIP
+
 #Features:
 
-Full theme support
-Tweening
+Full theme support,
+Tweening & more
 
 #Types:
 
